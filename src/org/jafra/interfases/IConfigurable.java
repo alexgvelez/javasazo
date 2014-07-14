@@ -15,7 +15,8 @@ public interface IConfigurable {
     String _BLANK = "";
     String _ROOT_IMG = "ROOTIMG";
  //   String _ROOT_CFDi = "C:\\Boveda Recibos CFDI 2014\\";
-    String _ROOT_CFDi = "C:\\Boveda Organizada\\";
+    String _ROOT_CFDi = "C:\\Boveda Organizada";
+    String _CFDi_SOURCE = "R:\\Boveda Recibos CFDI 2014\\";
     String _COPY_EMAIL = "jm_nomina@jafra.com.mx";
     
     
@@ -26,10 +27,6 @@ public interface IConfigurable {
     String _DISABLE = "B";
     String _CLOSED = "C";
     String _PROGRESS = "P";
-
-    //Estatus Usuarios
-    String _USR_ENABLED = "A";
-    String _USR_DISABLE = "B";
 
     //Email Configuration
     String SMTP_HOST_NAME = "172.16.21.15";
