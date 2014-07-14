@@ -31,6 +31,7 @@ public class EmailHelper implements Serializable, IConfigurable {
     private final EmailDao emailDao;
     private InternetAddress[] multipleRecipients;
     private List<Email> listOfAddresses;
+    private HtmlEmail emailA = new HtmlEmail();
     
     EmailAttachment attachment = new EmailAttachment();
     
@@ -70,7 +71,6 @@ public class EmailHelper implements Serializable, IConfigurable {
 
     public void sendApacheEmail() {
         try {
-            HtmlEmail emailA = new HtmlEmail();
             emailA.setHostName(SMTP_HOST_NAME);
             emailA.setFrom("desarrollo@jafra.com.mx", "QRQC SYSTEM");
             
@@ -108,7 +108,7 @@ public class EmailHelper implements Serializable, IConfigurable {
     
     public void sendAttachedEmailForCFDi() {
         try {
-            HtmlEmail emailA = new HtmlEmail();
+            
             emailA.setHostName(SMTP_HOST_NAME);
             emailA.setFrom("desarrollo@jafra.com.mx", "SISTEMA ENVIO CFDi JAFRA MNF");
             
@@ -131,7 +131,6 @@ public class EmailHelper implements Serializable, IConfigurable {
             
             // set the html message
             emailA.setHtmlMsg(htmlMsg.toString());            
-            emailA.attach(attachment);
             
             // set the alternative message
             emailA.setTextMsg("Your email client does not support HTML messages");
@@ -345,8 +344,9 @@ public class EmailHelper implements Serializable, IConfigurable {
             msg.append("<TR><TD colspan='2'>");
             msg.append(_P).append("Le enviamos los xml o cfdi(Comprobante Fiscal Digital por internet)").append(_P_CLOSED);
             msg.append("</TD></TR>");
+            msg.append("<TR><TD colspan='2'>");
             msg.append(_P).append("Pertenecientes al periodo:").append(_P_CLOSED);
-            msg.append("</TD><TD>");
+            msg.append("</TD></TR><TR><TD>");
             msg.append(_P).append(additionalInformation).append(_P_CLOSED);
             msg.append("</TD></TR>");
 
@@ -399,8 +399,18 @@ public class EmailHelper implements Serializable, IConfigurable {
     }
 
     public void setAttachment(EmailAttachment attachment) {
-        this.attachment = attachment;
+        this.attachment = attachment;        
     }
+
+    public HtmlEmail getEmailA() {
+        return emailA;
+    }
+
+    public void setEmailA(HtmlEmail emailA) {
+        this.emailA = emailA;
+    }
+    
+    
     
     
     

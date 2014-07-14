@@ -14,11 +14,12 @@ public interface IConfigurable {
     SimpleDateFormat _SGF = new SimpleDateFormat("yyyyMMdd hhmmss");
     String _BLANK = "";
     String _ROOT_IMG = "ROOTIMG";
-    String _ROOT_CFDi = "S:\\Boveda Recibos CFDI 2014\\";
+ //   String _ROOT_CFDi = "C:\\Boveda Recibos CFDI 2014\\";
+    String _ROOT_CFDi = "C:\\Boveda Organizada\\";
     String _COPY_EMAIL = "jm_nomina@jafra.com.mx";
     
     
-    String _HOST_NAME = "172.16.36.12:8080";
+    String _HOST_NAME = "172.16.36.43";
 
     //Global status
     String _ENABLED = "A";

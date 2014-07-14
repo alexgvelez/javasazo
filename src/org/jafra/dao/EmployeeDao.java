@@ -51,7 +51,7 @@ public class EmployeeDao implements IEmployee, IConfigurable, InitializingBean {
         Employee employee = new Employee();
         
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT TrabajadorId, ISNULL( Email, '").append(_COPY_EMAIL).append("') As Email, NombreCompleto, Estatus ");
+        sb.append("SELECT TrabajadorId, ISNULL( Email, '").append(_COPY_EMAIL).append("') As Email, NombreCompleto, Estatus, GrupoNominaID ");
         sb.append(" FROM ").append("Personal");
         sb.append(" WHERE TrabajadorId = :empleadoId");
 
@@ -90,6 +90,7 @@ public class EmployeeDao implements IEmployee, IConfigurable, InitializingBean {
                 employee.setName(rs.getString("NombreCompleto").trim());
                 employee.setEmail(rs.getString("Email").trim());
                 employee.setStatus(rs.getString("Estatus").trim());
+                employee.setGrupoNominaID(rs.getString("GrupoNominaID").trim());
 
             } catch (SQLException ex) {
                 Logger.getLogger(EmployeeDao.class.getName()).log(Level.SEVERE, null, ex);

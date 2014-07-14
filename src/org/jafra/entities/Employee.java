@@ -17,6 +17,15 @@ public class Employee implements IConfigurable {
     private String name;
     private String email;
     private String status;
+    private String grupoNominaID;
+
+    public String getGrupoNominaID() {
+        return grupoNominaID;
+    }
+
+    public void setGrupoNominaID(String grupoNominaID) {
+        this.grupoNominaID = grupoNominaID;
+    }
 
     public Employee() {
         this.id = 0;
@@ -29,6 +38,16 @@ public class Employee implements IConfigurable {
         this.email = email;
         this.status = status;
     }
+
+    public Employee(Integer id, String name, String email, String status, String grupoNominaID) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.status = status;
+        this.grupoNominaID = grupoNominaID;
+    }
+    
+    
 
     public Integer getId() {
         return id;

@@ -24,10 +24,9 @@ public class CFDi implements ICFDi, IConfigurable{
         
         File fileToFind = new File(_ROOT_CFDi);
         File[] list = fileToFind.listFiles((File dir, String name) -> name.matches(week));
-        
+
         if(list.length > 0)
             return list[0];
-        
         return null;
     }
 

@@ -13,7 +13,13 @@ import org.jafra.dao.EmployeeDao;
 import org.jafra.email.EmailHelper;
 import org.jafra.entities.Employee;
 import org.jafra.services.CFDi;
+import org.jafra.services.UtileriaDirectorio;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import java.awt.Cursor;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.commons.mail.EmailException;
 
 /**
  *
@@ -24,8 +30,9 @@ public class CaptureNomina extends javax.swing.JFrame {
     //Propiedad de Spring inicializa el contexto
     private final ClassPathXmlApplicationContext ctxt;
     private final EmailDao emailDao;
-    private final EmployeeDao employeeDao; 
+    private final EmployeeDao employeeDao;
     private final CFDi cfdiService;
+    private Employee employee = new Employee();
 
     /**
      * Creates new form CaptureNomina
@@ -36,10 +43,7 @@ public class CaptureNomina extends javax.swing.JFrame {
         emailDao = ctxt.getBean("emailDao", EmailDao.class);
         employeeDao = ctxt.getBean("employeeDao", EmployeeDao.class);
         cfdiService = ctxt.getBean("cfdiService", CFDi.class);
-        
-        
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -69,6 +73,8 @@ public class CaptureNomina extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jTextField5 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Envio de CFDi a Email");
@@ -97,6 +103,11 @@ public class CaptureNomina extends javax.swing.JFrame {
         buttonGroup1.add(jRadioButton1);
         jRadioButton1.setSelected(true);
         jRadioButton1.setText("Sindicalizado");
+        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton1ActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(jRadioButton2);
         jRadioButton2.setText("Empleado");
@@ -183,10 +194,24 @@ public class CaptureNomina extends javax.swing.JFrame {
         });
 
         jButton2.setText("Enviar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel8.setText("Ejercicio:");
 
         jTextField4.setText("2014");
+
+        jLabel10.setText("Boveda de archivos CFDI:");
+
+        jTextField5.setText("C:\\\\Boveda Organizada");
+        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -196,17 +221,23 @@ public class CaptureNomina extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)
-                        .addGap(26, 26, 26))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField5))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton1)))
+                        .addGap(26, 26, 26))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -219,7 +250,11 @@ public class CaptureNomina extends javax.swing.JFrame {
                     .addComponent(jButton2)
                     .addComponent(jLabel8)
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21))
         );
 
         pack();
@@ -232,75 +267,137 @@ public class CaptureNomina extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        
-        
-         Employee employee = new Employee();
-         employee = employeeDao.getInfo(Integer.parseInt(jTextField3.getText()));
-         
-         jLabel5.setText(employee.getName().trim());
-         jLabel7.setText(employee.getEmail().trim());
-         
-         String typeEmployee = (jRadioButton1.isSelected() ? "S" : "E");
-         
-         String week = typeEmployee + jTextField1.getText().trim() + "-" + jTextField4.getText().trim();
-         
-         File folderWeek = cfdiService.findFolderByWeek(week);
-         
-         EmailHelper email = new EmailHelper();
-         email.setEmployee(employee.getName());
-         email.setEmployeeEmail("jesus_quinonez@jafra.com.mx");
-         
-         int filesLoaded = 0;
-         for(File fileTmp : cfdiService.readFolderByWeek(folderWeek, employee.getId().toString())){
-             
-             EmailAttachment attachment = new EmailAttachment();
-             attachment.setPath(fileTmp.getAbsolutePath());
-             attachment.setDisposition(EmailAttachment.ATTACHMENT);
-             attachment.setDescription("CFDi del " + folderWeek.getName().trim());
-             attachment.setName(fileTmp.getName());
-             
-             email.setAttachment(attachment);
-             filesLoaded++;
-             
-         }
-         
-         email.sendEmailWithCFDi("Semana de: " + jTextField1.getText().trim() + " A semana:" + jTextField2.getText().trim());
-         JOptionPane.showMessageDialog(null, "Se enviaron " + filesLoaded + " archivos a " + employee.getName());
+
+        employee = employeeDao.getInfo(Integer.parseInt(jTextField3.getText()));
+
+        jLabel5.setText(employee.getName().trim());
+      //  jLabel7.setText("jose_gonzalez@jafra.com.mx");
+      //  employee.setEmail(jLabel7.getText().trim());
+        jLabel7.setText(employee.getEmail().trim());
+        jRadioButton1.setSelected(employee.getGrupoNominaID().trim().equals("S"));
+        jRadioButton2.setSelected(employee.getGrupoNominaID().trim().equals("E"));
+
+        // desde aki
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        EmailHelper email = new EmailHelper();
+        int filesLoaded = 0;
+        String ichar = null;
+
+        this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+        
+        int min = Integer.parseInt(jTextField1.getText().trim());
+        int max = Integer.parseInt(jTextField2.getText().trim());
+
+        email.setEmployee(employee.getName());
+        email.setEmployeeEmail(employee.getEmail());
+        
+        for (int i = min; i <= max; i++) {
+            
+            ichar= (min <= 9 ? "0" + i: "" + i);
+            
+//            if (min <= 9) {
+//                ichar = "0" + i;
+//            } else {
+//                ichar = "" + i;
+//            }
+
+            String week = employee.getGrupoNominaID().trim() + ichar + "-" + jTextField4.getText().trim();
+            File folderWeek = cfdiService.findFolderByWeek(week);
+
+            if (folderWeek != null) {
+
+                //    email.setEmployeeEmail(employee.getEmail());
+                for (File fileTmp : cfdiService.readFolderByWeek(folderWeek, employee.getId().toString())) {
+
+                    EmailAttachment attachment = new EmailAttachment();
+                    attachment.setPath(fileTmp.getAbsolutePath());
+                    attachment.setDisposition(EmailAttachment.ATTACHMENT);
+                    attachment.setDescription("CFDi del " + folderWeek.getName().trim());
+                    attachment.setName(fileTmp.getName());
+
+                    try {
+                        email.getEmailA().attach(attachment);
+                    } catch (EmailException ex) {
+                        Logger.getLogger(CaptureNomina.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    filesLoaded++;
+
+                }
+            }
+        }
+        
+        if (filesLoaded > 0) {
+            email.sendEmailWithCFDi("Semana de: " + jTextField1.getText().trim() + " A semana:" + jTextField2.getText().trim());
+            JOptionPane.showMessageDialog(null, "Se enviaron " + filesLoaded + " archivos a " + employee.getName());        // TODO add your handling code here:
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontraron archivos para: " + employee.getName());        // TODO add your handling code here:
+        }
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        jTextField3.setText("");
+        jLabel5.setText("");
+        jTextField1.setText("");
+        jTextField2.setText("");
+        jLabel9.setText("");
+        jLabel7.setText("");
+        //jRadioButton1.setText("");
+        //jRadioButton2.setText("");
+    
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton1ActionPerformed
+
+    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField5ActionPerformed
+
+    private static void init() throws IOException{
+            UtileriaDirectorio miUtileria = new UtileriaDirectorio();
+            miUtileria.crearCarpeta();
+            miUtileria.listaDirectorio();
+    }
+    
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+    public static void main(String args[]) throws IOException {
+        if (args.length > 0) {
+            init();
+        } else {
+            /* Set the Nimbus look and feel */
+            //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+             * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+             */
+            try {
+                for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                    if ("Nimbus".equals(info.getName())) {
+                        javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                        break;
+                    }
                 }
+            } catch (ClassNotFoundException ex) {
+                java.util.logging.Logger.getLogger(CaptureNomina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } catch (InstantiationException ex) {
+                java.util.logging.Logger.getLogger(CaptureNomina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                java.util.logging.Logger.getLogger(CaptureNomina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+                java.util.logging.Logger.getLogger(CaptureNomina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CaptureNomina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CaptureNomina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CaptureNomina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CaptureNomina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+            //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CaptureNomina().setVisible(true);
-            }
-        });
+            /* Create and display the form */
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    new CaptureNomina().setVisible(true);
+                }
+            });
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -309,6 +406,7 @@ public class CaptureNomina extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -324,5 +422,6 @@ public class CaptureNomina extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
 }
